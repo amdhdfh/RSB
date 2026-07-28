@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Medis - {{.selectedDokter.NamaDokter}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- Top Navbar Portal Dokter -->
+    <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-md p-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="bg-white text-blue-700 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider">Sesi Dokter Aktif</span>
+            <h1 class="text-lg font-bold">Dashboard Klinik Utama</h1>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <span class="text-sm font-medium text-blue-100">dr. {{.selectedDokter.NamaDokter}}</span>
+            <a href="/dokter/logout" class="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs py-1.5 px-3 rounded shadow transition-colors">
+                🚪 Keluar Sistem
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto p-6 sm:p-8">
+        <!-- Ringkasan Informasi Dokter -->
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Selamat Bertugas, {{.selectedDokter.NamaDokter}}</h2>
+                <p class="text-sm text-slate-500">Divisi Spesialisasi: <span class="text-blue-600 font-semibold">{{.selectedDokter.Spesialis.NamaSpesialis}}</span></p>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 px-4 py-2 rounded-lg text-center">
+                <span class="block text-xs text-slate-500 font-medium uppercase">Total Pasien Hari Ini</span>
+                <span class="text-2xl font-black text-blue-700">{{len .pendaftarans}}</span>
+            </div>
+        </div>
+
+        <!-- Tabel Data Pasien -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b bg-slate-50">
+                <h3 class="font-bold text-slate-900 text-base">Daftar Urutan Antrean Pemeriksaan</h3>
+            </div>
+            <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-slate-500 tracking-wider">No. Antrean</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-slate-500 tracking-wider">Nama Pasien</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-slate-500 tracking-wider">Keluhan Awal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-slate-500 tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium uppercase text-slate-500 tracking-wider">Tindakan Medis</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    {{range .pendaftarans}}
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-6 py-4 text-center font-black text-xl text-blue-600 w-24">
+                            {{.NomorAntrean}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="font-semibold text-slate-900">{{.Pasien.NamaPasien}}</div>
+                            <div class="text-xs text-slate-500">Jenis: {{.JenisLayanan}} | Ruang: {{.Ruangan.NamaRuangan}}</div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">
+                            {{.KeluhanAwal}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {{if eq .StatusAntrean "Menunggu"}}
+                                <span class="px-2.5 py-1 text-xs rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-200">Menunggu</span>
+                            {{else if eq .StatusAntrean "Diperiksa"}}
+                                <span class="px-2.5 py-1 text-xs rounded-full font-bold bg-blue-100 text-blue-800 border border-blue-200 animate-pulse">Sedang Diperiksa</span>
+                            {{else}}
+                                <span class="px-2.5 py-1 text-xs rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Selesai</span>
+                            {{end}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            {{if eq .StatusAntrean "Menunggu"}}
+                                <form action="/dokter/ubah-status" method="POST" class="inline-block">
+                                    <input type="hidden" name="nomor_antrean" value="{{.NomorAntrean}}">
+                                    <input type="hidden" name="status" value="Diperiksa">
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs py-1.5 px-3 rounded shadow transition-colors">
+                                        🔊 Panggil Pasien
+                                    </button>
+                                </form>
+                            {{else if eq .StatusAntrean "Diperiksa"}}
+                                <form action="/dokter/ubah-status" method="POST" class="inline-block">
+                                    <input type="hidden" name="nomor_antrean" value="{{.NomorAntrean}}">
+                                    <input type="hidden" name="status" value="Selesai">
+                                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-1.5 px-3 rounded shadow transition-colors">
+                                        ✓ Selesaikan Pemeriksaan
+                                    </button>
+                                </form>
+                            {{else}}
+                                <span class="text-xs text-slate-400 font-medium">Selesai diperiksa</span>
+                            {{end}}
+                        </td>
+                    </tr>
+                    {{end}}
+
+                    {{if not .pendaftarans}}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-400 text-sm">
+                            Tidak ada jadwal kunjungan pasien untuk Anda hari ini.
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Kelola Dokter RSB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navbar Admin -->
+    <div class="bg-white shadow-sm border-b p-4 flex gap-6 font-semibold">
+        <a href="/admin/pasien" class="text-slate-500 hover:text-blue-600 transition">Pasien</a>
+        <a href="/admin/dokter" class="text-blue-600 border-b-2 border-blue-600">Dokter</a>
+        <a href="/admin/pendaftaran" class="text-slate-500 hover:text-blue-600 transition">Pendaftaran & Antrean</a>
+        <a href="/admin/layanan" class="text-slate-500 hover:text-blue-600 transition">Lab & Farmasi</a>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Form Tambah Dokter Baru -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+                <h2 class="text-lg font-semibold mb-4 text-slate-900">Tambah Dokter Baru</h2>
+                <form action="/admin/dokter/tambah" method="POST" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Nama Dokter *</label>
+                        <input type="text" name="nama" required class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border" placeholder="Contoh: dr. Andi Wijaya">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Spesialisasi *</label>
+                        <select name="spesialis" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm p-2 border">
+                            {{range .spesialis}}
+                            <option value="{{.IDSpesialis}}">{{.NamaSpesialis}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">No. Telepon</label>
+                        <input type="text" name="telp" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm p-2 border" placeholder="08xxxx">
+                    </div>
+                    <p class="text-[11px] text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
+                        💡 <b>Info:</b> Username akan dibuat otomatis dari nama dokter (huruf kecil tanpa spasi) dan password bawaan adalah <u>dokter123</u>.
+                    </p>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                        Simpan Dokter
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tabel Data Dokter -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-200">
+                        <h2 class="text-lg font-semibold text-slate-900">Daftar Dokter Terdaftar</h2>
+                        <p class="text-xs text-slate-500">Memuat data seluruh dokter spesialis yang aktif melayani beserta informasi akun login.</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nama Dokter</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Username Login</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Spesialis</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Kontak</th>
+                                </tr>
+                            </thead> <!-- Perbaikan Typo: Sebelumnya tertulis </tbody> -->
+                            
+                            <tbody class="bg-white divide-y divide-slate-200">
+                                {{range .dokters}}
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                                        {{.NamaDokter}}
+                                    </td>
+                                    <!-- Menampilkan username dokter -->
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600 font-mono font-medium">
+                                        {{.Username}}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                        <span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">
+                                            {{.Spesialis.NamaSpesialis}}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                                        📞 {{.NoTelp}}
+                                    </td>
+                                </tr>
+                                {{end}}
+
+                                {{if not .dokters}}
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-slate-500 text-sm">
+                                        Belum ada data dokter masuk.
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

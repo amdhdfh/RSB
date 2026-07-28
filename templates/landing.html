@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><title>Sistem Informasi Rumah Sakit - RSB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col justify-center items-center">
+    <div class="max-w-4xl w-full p-6 text-center">
+        <h1 class="text-3xl font-bold text-slate-800 mb-2">Selamat Datang di Portal Layanan RSB</h1>
+        <p class="text-slate-500 mb-8">Silakan pilih portal masuk sesuai dengan keperluan Anda</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Pasien -->
+            <a href="/pasien/daftar" class="bg-white p-6 rounded-2xl shadow-sm border hover:border-blue-500 hover:shadow-md transition text-center block">
+                <div class="text-4xl mb-3">🩺</div>
+                <h3 class="text-lg font-bold text-slate-800">Portal Pasien</h3>
+                <p class="text-sm text-slate-500 mt-1">Pendaftaran online mandiri untuk pasien baru & antrean.</p>
+            </a>
+            <!-- Dokter -->
+            <a href="/dokter/dashboard" class="bg-white p-6 rounded-2xl shadow-sm border hover:border-emerald-500 hover:shadow-md transition text-center block">
+                <div class="text-4xl mb-3">🥼</div>
+                <h3 class="text-lg font-bold text-slate-800">Portal Dokter</h3>
+                <p class="text-sm text-slate-500 mt-1">Halaman khusus dokter untuk melihat antrean & riwayat pasien.</p>
+            </a>
+            <!-- Admin -->
+            <a href="/admin/pasien" class="bg-white p-6 rounded-2xl shadow-sm border hover:border-indigo-500 hover:shadow-md transition text-center block">
+                <div class="text-4xl mb-3">🏢</div>
+                <h3 class="text-lg font-bold text-slate-800">Portal Admin</h3>
+                <p class="text-sm text-slate-500 mt-1">Kelola data pasien, master dokter, poli, & layanan penunjang.</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

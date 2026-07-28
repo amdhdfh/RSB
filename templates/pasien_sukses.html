@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pendaftaran Berhasil - RSB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-xl w-full bg-white rounded-2xl border shadow-lg p-6 md:p-8 text-center">
+        
+        <!-- Ikon Sukses -->
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner animate-bounce">
+            ✓
+        </div>
+
+        <h2 class="text-2xl font-bold text-slate-950">Pendaftaran Mandiri Berhasil!</h2>
+        <p class="text-sm text-slate-500 mt-1">Data Anda telah tersimpan dengan aman di sistem pusat RSB.</p>
+
+        <!-- Kartu Informasi Pasien -->
+        <div class="bg-slate-50 rounded-xl p-4 text-left my-6 border border-slate-200">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 border-b pb-1">Ringkasan Data Pasien</h4>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Nama Lengkap:</span>
+                    <span class="font-semibold text-slate-900">{{.pasien.NamaPasien}}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Nomor NIK:</span>
+                    <span class="font-mono text-slate-900">{{.pasien.NIK}}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">No. WhatsApp:</span>
+                    <span class="text-slate-900">{{.pasien.NoWhatsapp}}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Email:</span>
+                    <span class="text-slate-900">{{.pasien.Email}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instruksi Selanjutnya -->
+        <div class="text-xs text-left bg-blue-50 text-blue-800 p-3 rounded-lg border border-blue-200 mb-6">
+            <p class="font-bold mb-1">💡 Langkah Selanjutnya:</p>
+            <ul class="list-disc list-inside space-y-1">
+                <li>Silakan datang ke meja **Admisi/Pendaftaran Utama** saat tiba di rumah sakit.</li>
+                <li>Tunjukkan KTP asli Anda ke petugas admin untuk verifikasi berkas.</li>
+                <li>Petugas admin akan langsung memasukkan Anda ke antrean dokter tujuan.</li>
+            </ul>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <button onclick="window.print()" class="px-5 py-2 bg-slate-800 text-white text-sm font-medium rounded-lg hover:bg-slate-900 transition flex items-center justify-center gap-1">
+                🖨️ Cetak Bukti
+            </button>
+            <a href="/" class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                Kembali ke Beranda
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>
