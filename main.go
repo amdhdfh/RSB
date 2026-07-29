@@ -41,7 +41,7 @@ func main() {
 
 	// ================= GATEWAY UTAMA =================
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "landing.html", nil)
+		c.HTML(http.StatusOK, "home.html", nil)
 	})
 
 	// ================= ROLE: PORTAL PASIEN MANDIRI =================
@@ -233,18 +233,16 @@ func main() {
 			c.HTML(http.StatusOK, "dokter.html", gin.H{"dokters": dokters, "spesialis": spesialis})
 		})
 
-		// Aksi Tambah Dokter via Admin (agar singkron dengan templates/dokter.html)
 		admin.POST("/dokter/tambah", func(c *gin.Context) {
 			idSpesialisRaw, _ := strconv.ParseUint(c.PostForm("spesialis"), 10, 32)
 			namaDokter := c.PostForm("nama")
 
-			// Generate username default berbasis nama tanpa spasi untuk memudahkan admin
 			defaultUser := strings.ToLower(strings.ReplaceAll(namaDokter, " ", ""))
 
 			dokter := Dokter{
 				NamaDokter:  namaDokter,
 				Username:    defaultUser,
-				Password:    "dokter123", // password bawaan default
+				Password:    "dokter123",
 				IDSpesialis: uint(idSpesialisRaw),
 				NoTelp:      c.PostForm("telp"),
 			}
